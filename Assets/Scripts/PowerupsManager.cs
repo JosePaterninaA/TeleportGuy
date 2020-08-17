@@ -25,7 +25,7 @@ public class PowerupsManager : MonoBehaviour
         {
             float x = Random.Range(-20f, 20f);
             float z = Random.Range(-20f, 20f);
-            int type = Random.Range(1, 3);
+            int type = Random.Range(1, 4);
             switch (type)
             {
                 case 1:

@@ -18,6 +18,7 @@ public class Teleportation : MonoBehaviour
     public float maxWait = 5.0f;
     private bool moving = false;
     public GameObject player;
+    public TimeManager timeManager;
     void Start()
     {
         force = GetComponent<TeleportationForce>();
@@ -47,6 +48,7 @@ public class Teleportation : MonoBehaviour
         }
         if (teleportingIn)
         {
+            
             Vector3 size = transform.localScale;
             Vector3 newSize = new Vector3(10,10,10);
             transform.localScale = Vector3.Lerp(size, newSize, teleportSpeed);
@@ -61,6 +63,7 @@ public class Teleportation : MonoBehaviour
         float z = Random.Range(-20f, 20f);
         gameObject.transform.position = new Vector3(x, 0.5f, z);
         player.GetComponent<SkinnedMeshRenderer>().enabled = true;
+        timeManager.SlowMotion();
         force.Push();
 
     }

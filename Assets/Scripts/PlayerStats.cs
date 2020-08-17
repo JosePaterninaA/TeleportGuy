@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
     public Text healthText;
     public Text gasText;
     public int powerupLayer = 10;
+    private int fireDamage = 10;
 
     private void Start()
     {
@@ -28,6 +29,18 @@ public class PlayerStats : MonoBehaviour
     {
         gas += amount;
         gasText.text = "Gas: " + gas;
+    }
+
+    public void UpdateDamage(int damage)
+    {
+        StartCoroutine(nameof(StrengthPowerUpDelay),damage);
+    }
+
+    IEnumerator StrengthPowerUpDelay(int damage)
+    {
+        GetComponentInChildren<FireController>().UpdateStrength(damage, true);
+        yield return new WaitForSeconds(10);
+        GetComponentInChildren<FireController>().UpdateStrength(fireDamage, false);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -53,9 +66,11 @@ public class PlayerStats : MonoBehaviour
                     }
                     else
                     {
-                        UpdateGas(100-gas);
+                        UpdateGas(100 - gas);
                     }
-
+                    break;
+                case "StrengthPowerUp":
+                    UpdateDamage(40);
                     break;
             }
             
