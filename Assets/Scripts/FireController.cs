@@ -10,6 +10,8 @@ public class FireController : MonoBehaviour
     public List<ParticleCollisionEvent> collisionEvents;
     public float trailRotationSpeed=20f;
     public int damage = 10;
+    private float coolDownGas = 1f;
+    private float coolDownActual = 0f;
     void Start()
     {
         part = GetComponent<ParticleSystem>();
@@ -24,7 +26,7 @@ public class FireController : MonoBehaviour
         if (state)
         {
             main.startLifetime = new ParticleSystem.MinMaxCurve(1.5f);
-            main.startSize  = new ParticleSystem.MinMaxCurve(3f);
+            main.startSize  = new ParticleSystem.MinMaxCurve(3.5f);
         }
         else
         {
@@ -40,10 +42,17 @@ public class FireController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && GetComponentInParent<PlayerStats>().gas>0)
         {
             part.Play();
-            GetComponentInParent<PlayerStats>().UpdateGas(-5);
+            
             // RotateTrail();
         }
 
+        if (Input.GetMouseButton(0) && coolDownActual >= coolDownGas)
+        {
+            GetComponentInParent<PlayerStats>().UpdateGas(-1);
+            coolDownActual = 0;
+        }
+
+        coolDownActual += Time.deltaTime;
         if (Input.GetMouseButtonUp(0))
         {
             part.Stop();
